@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		input[type="text"]{
+			width:200px;
+			height:30px;
+			padding-left:5px;
+		}
+		input[type="button"]{
+			width:80px;
+			height:30px;
+			text-align: center;
+			line-height: 30px;
+			cursor:pointer;
+		}
+		#num li{
+			list-style: none;
+			width:40px;
+			height:40px;
+			background:red;
+			color:#fff;
+			text-align: center;
+			float:left;
+			margin-left:10px;
+			line-height: 40px;
+			font-size:16px;
+			cursor:pointer;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="top">
+			<input type="text" id="input" />
+			<input type="button" value="左侧入"/><input type="button" value="右侧入"/>
+			<input type="button" value="左侧出"/><input type="button" value="右侧出"/>
+		</div>
+		<div>
+			<ul id="num">
+				<li>10</li>
+				<li>3</li>
+				<li>7</li>
+				<li>12</li>
+				<li>11</li>
+				<li>30</li>
+			</ul>
+		</div>
+		<script>
+			var oVal=document.getElementById("input");	
+			var aBtn=document.getElementsByTagName("input");
+			var oNum=document.getElementById("num");
+			var aLi=oNum.getElementsByTagName("li");
+			aBtn[1].onclick=function(){
+				var newItem=document.createElement("li");
+				var textnode=document.createTextNode(oVal.value);
+				newItem.appendChild(textnode);
+				oNum.insertBefore(newItem,oNum.childNodes[0]);
+			}
+			aBtn[2].onclick=function(){
+				var newItem=document.createElement("li");
+				var textnode=document.createTextNode(oVal.value);
+				newItem.appendChild(textnode);
+				oNum.appendChild(newItem);
+			}
+			aBtn[3].onclick=function(){
+				oNum.removeChild(aLi[0]);
+			}
+			aBtn[4].onclick=function(){
+				oNum.removeChild(aLi[aLi.length-1]);
+			}
+		</script>
+	</body>
+</html>
