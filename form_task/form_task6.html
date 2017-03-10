@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			#bt1{
+				width:80px;
+				border:1px solid #ccc;
+				border-radius: 4px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				margin:50px auto;
+				cursor: pointer;
+				color:#333;
+			}
+			#bt1:hover{
+				background:pink;
+				color:#fff;
+				border:none;
+			}
+			#box{
+				width:500px;
+				height:400px;
+				position: fixed;
+				top:50%;
+				margin-left:-250px;
+				left:50%;
+				margin-top:-200px;
+				background:#fff;
+				border:1px solid pink;
+				display: none;
+			}
+			#box h1{
+				height:30px;
+				background:pink;
+				color:#fff;
+				padding-left:10px;
+				font-weight: normal;
+				font-size:16px;
+				line-height: 30px;
+			}
+			#box .content{
+				color:#333;
+				display:inline-block;
+				height:330px;
+				padding-left:10px;
+				width:100%;
+				line-height: 80px;
+			}
+			.button{
+				width:100%;
+			}
+			button{
+				outline: none;
+			}
+			button{
+				width:80px;
+				text-align: center;
+				line-height: 30px;
+				color:#fff;
+				background: pink;
+				float:right;
+				margin-right:10px;
+				border:none;
+				cursor: pointer;
+			}
+			.fl{
+				float:left;
+			}
+		</style>
+	</head>
+	<body id="body">
+		<div id="bt1">浮出层</div>
+		<div id="box">
+			<h1 id="bar">这是一个可拖动的浮出层</h1>
+			<div class="content">这是一个浮出层</div>
+			<div class="button fl">
+				<button id="bt2">确定</button>
+				<button id="bt3">取消</button>
+			</div>
+		</div>
+		<script>
+			function $(id) {
+			    return document.getElementById(id);
+			}
+			var bt1=$("bt1"),
+				box=$("box"),
+				bt2=$("bt2"),
+				body=$("body"),
+				bar=$("bar"),
+				bt3=$("bt3");
+			bt1.onclick=function(){
+				box.style.display="block";
+				body.style.background="#ccc"
+				stopBubble();
+			}
+			bt2.onclick=function(){
+				box.style.display="none";
+			}
+			bt3.onclick=function(){
+				box.style.display="none";
+			}
+			document.onclick=function(){
+				box.style.display="none";
+			}
+			function stopBubble(e){   
+		        if(e && e.stopPropagation)    
+		            e.stopPropagation();    
+		        else    
+		            window.event.cancelBubble = true;   
+		  }
+		</script>
+	</body>
+</html>
