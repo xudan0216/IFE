@@ -22,6 +22,7 @@
 			height:40px;
 			background:red;
 			color:#fff;
+			margin-top:50px;
 			text-align: center;
 			float:left;
 			margin-left:10px;
@@ -38,17 +39,10 @@
 			<input type="button" value="左侧出"/><input type="button" value="右侧出"/>
 		</div>
 		<div>
-			<ul id="num">
-				<li>10</li>
-				<li>3</li>
-				<li>7</li>
-				<li>12</li>
-				<li>11</li>
-				<li>30</li>
-			</ul>
+			<ul id="num"></ul>
 		</div>
 		<script>
-			var oVal=document.getElementById("input");	
+			/*var oVal=document.getElementById("input");	
 			var aBtn=document.getElementsByTagName("input");
 			var oNum=document.getElementById("num");
 			var aLi=oNum.getElementsByTagName("li");
@@ -70,6 +64,58 @@
 			aBtn[4].onclick=function(){
 				oNum.removeChild(aLi[aLi.length-1]);
 			}
+			for(var i=0;i<aLi.length;i++)
+			{
+				aLi[i].onclick=function(){
+					this.parentNode.removeChild(this);
+				}
+			}*/
+			var arr=[];
+			var strr="";
+			var oVal=document.getElementById("input");	
+			var aBtn=document.getElementsByTagName("input");
+			var oNum=document.getElementById("num");
+			var aLi=oNum.getElementsByTagName("li");
+			function change()
+			{
+				aBtn[1].addEventListener("click",function(){
+					arr.unshift(oVal.value);
+					arrChange();
+				},false);
+				aBtn[2].addEventListener("click",function(){
+					arr.push(oVal.value);
+					arrChange();
+				},false);
+				aBtn[3].addEventListener("click",function(){
+					
+					arr.shift(oVal.value);
+					alert(aLi[0].innerHTML);
+					arrChange();
+				},false);
+				aBtn[4].addEventListener("click",function(){
+					
+					arr.pop(oVal.value);
+					alert(aLi[aLi.length-1].innerHTML);
+					arrChange();
+				},false);
+			}
+			function arrChange(){
+				for(var i=0;i<arr.length;i++){
+					strr+="<li>"+arr[i]+"</li>";
+				}
+				oNum.innerHTML=strr;
+				strr="";
+			}
+			function start(){
+				oVal.addEventListener("blur",function(){
+					if(!(/^\d+$/.test(oVal.value))){
+						alert("输入有误");
+						return;
+					}
+				},false);
+				change();
+			}
+			start();
 		</script>
 	</body>
 </html>

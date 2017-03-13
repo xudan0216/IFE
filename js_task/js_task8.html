@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 23</title>
+    <style>
+        div{
+            display: inline-block;
+            border:1px solid black;
+            box-sizing: border-box;
+        }
+        .one{
+            height:140px;
+            padding:10px;
+        }
+        .two{
+            height:120px;
+            padding:10px;
+        }
+        .three{
+            height:100px;
+            padding:10px;
+        }
+        .four{
+            height:80px;
+            padding:10px;
+        }
+        .five{
+            width:60px;
+            height:60px;
+        }
+        button{
+            margin:50px;
+            height:30px;
+            width:50px;
+        }
+    </style>
+  </head>
+  <body>
+	    <div id="super" class="one">
+	    Super
+	        <div  class="two">
+	        Car
+	            <div class="three">
+	            Apple
+	                <div class="four">Poor</div>
+	                <div class="four">Pig</div>
+	                <div class="four">Cola</div>
+	                <div class="four">Soccer</div>
+	            </div>
+	            <div class="three">
+	            Phone
+	            </div>
+	            <div class="three">
+	                <div class="four">Book</div>
+	                <div class="four">School</div>
+	            </div>
+	        </div>
+	        <div  class="two">
+	        Note
+	            <div class="three">
+	            Human
+	                <div  class="four">Code</div>
+	                <div  class="four">Operate</div>
+	                <div  class="four">Mon</div>
+	            </div>
+	            <div  class="three">
+	            Progrom
+	                <div class="four">
+	                Bement
+	                    <div class="five">Cat</div>
+	                </div>
+	                <div class="four">Glass</div>
+	            </div>
+	        </div>
+	        <div  class="two">Fish</div>
+	    </div>
+	    <button id="button">遍历</button>
+	    <input type="text" id="input">
+	    <button id="check">查询</button>
+		<script type="text/javascript">
+			var tree=document.getElementById("super"),
+			    list=[],
+			    a=undefined,
+			    timer=null,
+			    check=document.getElementById("check"),
+			    button=document.getElementById("button");
+			//深度优先遍历
+			function travel(node){
+			    if(node!=null){
+			        list.push(node);
+			        for(var i=0;i<node.children.length;i++){
+			            if(node.children[i].nodeType==1){
+			                travel(node.children[i]);
+			            }
+			        }
+			    }
+			}
+			//依次改变数组list中的元素背景颜色
+			function show(a){
+			    var input=document.getElementById('input').value;
+			    i = 0;
+			    list[i].style.backgroundColor='pink';
+			    timer = setInterval(function () {
+			        i++;
+			        if (i < list.length) {
+			            var content=list[i].firstChild.nodeValue.replace(/(^\s*)|(\s*$)/g, "") ;
+			            if(input==content&&content&&a==1){
+			                clearInterval(timer);
+			                list[i].style.backgroundColor="red";
+			                list[i-1].style.backgroundColor="#fff";
+			            }
+			            else{
+			                list[i-1].style.backgroundColor = '#fff';
+			                list[i].style.backgroundColor = 'pink';
+			            }
+			        } 
+			        else {
+			            clearInterval(timer);
+			            list[list.length-1].style.backgroundColor = '#fff';
+			            if(a==1) alert("未找到输入的值！");
+			        }
+			    },500);
+			}
+			//深度优先遍历
+			button.addEventListener("click",function(){
+			    origin();
+			    travel(tree);
+			    show(0);
+			});
+			//查询函数
+			check.addEventListener("click",function(){
+			    origin();
+			    travel(tree);
+			    show(1);
+			});
+			//初始状态
+			function origin(){
+			    list=[];
+			    clearInterval(timer);
+			    var divs=document.getElementsByTagName("div");
+			    for(var i=0;i<divs.length;i++){
+			        divs[i].style.backgroundColor="#fff";
+			    }
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		#container{
+            width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+		input[type="text"]{
+			width:200px;
+			height:30px;
+			padding-left:5px;
+		}
+		input[type="button"]{
+			width:80px;
+			height:30px;
+			text-align: center;
+			line-height: 30px;
+			cursor:pointer;
+		}
+		.bottomDiv{
+            flex: 1;
+            color:#FFF;
+            margin:0 1px;
+            font-size: 10px;
+            background: red;
+        }
+        #bottom{
+            width: 98%;
+            height: 200px;
+            display: flex;
+            justify-content:center;
+            align-items: flex-end;/*在交叉轴上底部对齐*/
+            margin: 10 auto;
+            padding: 10px;
+        }
+		</style>
+	</head>
+	<body>
+		<div id="container">	
+			<div class="top">
+				<input type="text" id="input" />
+				<input type="button" value="左侧入"/><input type="button" value="右侧入"/>
+				<input type="button" value="左侧出"/><input type="button" value="右侧出"/>
+				<input type="button" value="重新排序"/><input type="button" value="清空"/>
+				<input type="button" value="随机生成"/>
+			</div>
+			<div id="bottom"></div>
+		</div>
+		<script>
+			var arr=[];
+			var strr="";
+			var text=document.getElementById("input");	
+			var aBtn=document.getElementsByTagName("input");
+			var bottomNum=document.getElementById("bottom");
+			var timer=null;
+			function change(){
+				aBtn[1].addEventListener("click",function(){
+					inputRule();
+					arr.unshift(text.value);
+					arrChange();
+				},false);
+				aBtn[2].addEventListener("click",function(){
+					inputRule();
+					arr.push(text.value);
+					arrChange();
+				},false);
+				aBtn[3].addEventListener("click",function(){
+					inputRule();
+					arr.shift(text.value);
+					arrChange();
+				},false);
+				aBtn[4].addEventListener("click",function(){
+					inputRule();
+					arr.pop(text.value);
+					arrChange();
+				},false);
+				aBtn[5].addEventListener("click",function(){
+					resort();
+				},false);
+				aBtn[6].addEventListener("click",function(){
+					clear();
+				},false);
+				aBtn[7].addEventListener("click",function(){
+					randomArr();
+					arrChange();
+				},false);
+			}
+			//input规则
+			function inputRule(){
+				tex=text.value.trim();
+				if(tex>100||tex<10){
+					alert("请输入10-100的数");
+					text.value="";
+				}
+				if(/[^\d]/.test(tex)){
+					alert("请输入10-100的数");
+					text.value="";
+				}
+				if(arr.length>60){
+					alert("数组的长度不能超过60");
+					text.value="";
+				}
+			}
+			//清空数组
+			function clear(){
+				clearInterval(timer);
+				arr=[];
+				arrChange();
+			}
+			//随机生成20个【10-100】的数
+			function randomArr(){
+				clear();
+				for(var i=0;i<20;i++){
+					arr.push(Math.floor(Math.random()*91+10))
+				}
+			}
+			//渲染数组
+			function arrChange(){
+				if(arr.length){
+					for(var i=0;i<arr.length;i++){
+						strr+='<div class="bottomDiv" style="height:'+arr[i]+'px">'+arr[i]+'</div>';
+					}		
+				}
+				bottomNum.innerHTML=strr;
+				strr="";
+			}
+			//冒泡排序
+			function resort(){
+				clearInterval(timer);
+				var i=0;j=0;len=arr.length;
+				timer=setInterval(function(){
+					if(i<len-1){
+						if(j==len-1-i){
+							j=0;
+							i++;
+						}
+						if(arr[j]>arr[j+1]){
+							var x=0;
+							x=arr[j];
+							arr[j]=arr[j+1];
+							arr[j+1]=x;
+						}
+						j++;
+					}
+					arrChange();
+					if(i==arr.length-1){
+						clearInterval(timer);
+					}
+				},50)
+			}
+			function start(){
+				change();
+			}
+			start();
+		</script>
+	</body>
+</html>
