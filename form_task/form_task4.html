@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+        *{
+            margin: 0px;
+            padding: 0px;
+            font-family: "Microsoft Yahei";
+            font-size: 20px;
+        }
+        table{
+            position: relative;
+            border-collapse: collapse;
+        }
+        td{
+            width: 50px;
+            height: 50px;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        .background td:first-child{
+            border-right: 2px solid #000;
+            border-bottom: 0;
+        }
+        .background td:last-child{
+            border-right: 2px solid #000;
+        }
+        .background tr:first-child td{
+            border-right: 0;
+            border-bottom: 2px solid #000;
+        }
+        .background tr:last-child td{
+            border-bottom: 2px solid #000;
+        }
+        .background tr:first-child td:first-child{
+            border-bottom: 0;
+        }
+        .background tr:last-child td:first-child{
+            border-bottom: 0;
+        }
+        #square{
+            top: 205px;
+            left: 205px;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #f00;
+        }
+        #square div{
+            position: absolute;
+            width: 50px;
+            height: 10px;
+            background: #00f;
+        }
+        input{
+            width: 180px;
+        }
+        #bottom{
+            margin:20px 0 0 50px;
+        }
+    </style>
+	</head>
+	<body>
+		<div class="container">
+	        <table>
+	            <tbody id="background" class="background">
+	                <div id="square">
+	                    <div></div>
+	                </div>
+	            </tbody>
+	        </table>
+	        <div id="bottom">
+	            <input type="text" id="text">
+	            <button id="bt1">执行</button>
+	            <button id="left">向左转</button>
+	            <button id="right">向右转</button>
+	            <button id="go">向前</button>
+	            <button id="back">掉头</button>
+	        </div>
+    	</div>
+    	<script>
+    		function $(id){
+    			return document.getElementById(id);
+    		}
+    		var bg=$("background"),
+			    square=$("square"),
+			    text=$("text"),
+			    bt1=$("bt1"),
+			    left=$("left"),
+			    right=$("right"),
+			    forward=$("go"),
+			    back=$("back");
+			function addEvent(element,type,func){
+				if(element.addEventListener){
+					element.addEventListener(type,func,false);
+				}else if(element.attachEvent){
+					element.attachEvent("on"+type,func);
+				}else{
+					element['on'+type]=func;
+				}
+			}
+			
+			//渲染列表
+			(function createTable(){
+				for(var i=0;i<11;i++){
+					var bg_tr=[];
+					bg_tr[i]=document.createElement("tr");
+					for(var j=0;j<11;j++){
+						var bg_td=[];
+						bg_td[j]=document.createElement("td");
+						if(i===0&&j>0){
+							bg_td[j].innerHTML=j;
+						}
+						if(j===0&&i>0){
+							bg_td[j].innerHTML=i;
+						}
+						bg_tr[i].appendChild(bg_td[j]);
+					}
+					bg.appendChild(bg_tr[i]);
+				}
+			})();
+			//存储小方块位置
+			var pos={
+				x:4,
+				y:4,
+				face:0//face为0时，为初始值，正面朝上，face+1则向右转90°
+			};
+			//前进一格
+			function go(){
+				var face_=pos.face;
+				face_=face_%4+(face_%4<0?4:0);
+				if(face_===0&&pos.y>0){//正面朝上
+					pos.y--;
+				}else if(face_===1&&pos.x<9){//正面朝右
+					pos.x++;
+				}else if(face_===2&&pos.y<9){//正面朝下
+					pos.y++;
+				}else if(face_===3&&pos.x>0){//正面朝左
+					pos.x--;
+				}else{
+					return false;
+				}
+			}
+			//向左转90°
+			function turnLeft(){
+				pos.face--;
+			}
+			//向右转90°
+			function turnRight(){
+				pos.face++;
+			}
+			//向右转180°
+			function turnback(){
+				pos.face+=2;
+			}
+			//小方块的移动渲染
+			function change(){
+				pos.face=pos.face%4+(pos.face%4<0?4:0);
+				square.style.left=pos.x*51+52+'px';
+				square.style.top=pos.y*51+52+'px';
+				square.style.transform=square.style.webkitTransform=square.style.msTransform="rotate("+pos.face*90+"deg)";
+			}
+			//事件监听程序
+			function event(){
+				if(text.value.toLowerCase()==="go"){
+					go();
+					change();
+				}
+				if(text.value.toLowerCase()==="turnlef"){
+					turnLeft();
+					change();
+				}
+				if(text.value.toLowerCase()==="turnrig"){
+					turnLeft();
+					change();
+				}
+				if(text.value.toLowerCase()==="turnbac"){
+					turnLeft();
+					change();
+				}
+			}
+			//给按钮添加事件监听
+			function buttonEvent(){
+				addEvent(left,'click',function(){
+					turnLeft();
+					change();
+				});
+				addEvent(right,'click',function(){
+					turnRight();
+					change();
+				});
+				addEvent(forward,'click',function(){
+					go();
+					change();
+				});
+				addEvent(back,'click',function(){
+					turnback();
+					change();
+				});
+			}
+			(function start(){
+				change();
+				buttonEvent();
+				addEvent(bt1,'click',event);
+			})();
+    	</script>
+	</body>
+</html>

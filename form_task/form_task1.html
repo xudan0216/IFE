@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>form_task</title>
+		<style>
+			input,button,label{border:none;outline: none;box-sizing: border-box;}
+			form{width:800px;margin: 100px 0 0 100px;}
+			form .name{
+				height:100px;
+			}
+			form label{
+				font-size:20px;
+				color:#000;
+				font-weight: bold;
+				width:100px;
+				display: inline-block;
+			}
+			#text1{
+				font-size:20px;
+				color:#666;
+				width:300px;
+				height:30px;
+				padding-left:5px;
+				display: inline-block;
+				border-radius:4px;
+				border:1px solid #ccc;
+			}
+			#button1{
+				font-size:20px;
+				font-weight: bold;
+				color:#fff;
+				width:60px;
+				height:30px;
+				background:pink;
+				text-align:center;
+				line-height: 30px;
+				border-radius:4px;
+				display: inline-block;
+				margin-left:50px;
+				cursor: pointer;
+			}
+			#tips{
+				display: block;
+				margin:5px 0 0 110px;
+			}
+		</style>
+	</head>
+	<body>
+		<form id="container" action="">
+			<div id="div1">
+				<label for="name1">名称</label>
+				<input type="text" id="text1" /><input type="button" id="button1" value="验证"/>
+				<span id="tips">必填，长度为4-16个字符</span>
+			</div>
+		</form>	
+		<script>
+			function $(id) {
+			    return document.getElementById(id);
+			}
+			var text1 = $("text1"),
+			bt1 = $("button1"),
+			div1 = $("div1"),
+			length = 0,
+			span = $("tips");
+			//检验text1是否符合要求
+			function check1() {           
+				length=check();            
+				if (length===0) {                
+					text1.style.border="1px solid red";                
+					span.style.color="red";                
+					span.innerHTML="姓名不能为空";            
+				}else if ((length>0&&length<4)||(length>14)) 
+				{           
+					text1.style.border="1px solid #bbb";
+					span.style.color="#bbb";                
+					span.innerHTML="必填,长度为4-16个字符";            
+				}else{                
+					span.innerHTML="名称格式正确";                
+					span.style.color="green";                
+					text1.style.border="1px solid green";            
+				}        
+			}        
+			//计算出text1中的字符数
+			function check(){            
+				length=0;            
+				var value=text1.value;            
+				var pattern1=/[\u4e00-\u9fa5]/g;            
+				var pattern2=/[\w]/g;            
+				while(pattern1.exec(value)){                
+					length+=2;            
+				}            
+				while(pattern2.exec(value)){                
+					length++;            
+				}            
+				return length;       
+			}        
+			//添加事件监听
+			bt1.addEventListener('click',check1,false);
+		</script>
+	</body>
+</html>

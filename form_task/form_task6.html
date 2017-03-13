@@ -59,6 +59,7 @@
 		  <p></p>
 		<script>
 			window.onload = function() {
+				//实现页面的拖拽
 			  var method = {
 			    onmousedown: function() {
 			      var box = document.getElementById("box");
@@ -91,6 +92,7 @@
 			      }
 			
 			    },
+			    //当鼠标与盒子小于一定距离时变换鼠标指针
 			    onmouse: function(event) {
 			      box.onmousemove = function() {
 			        var box = document.getElementById("box");
@@ -119,6 +121,7 @@
 			        method.fn(str);
 			      }
 			    },
+			    //判断鼠标位置并做出相应的放大缩小
 			    fn: function(dir) {
 			      var box = document.getElementById("box");
 			      var t = box.offsetTop;

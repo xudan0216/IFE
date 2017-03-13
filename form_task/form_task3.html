@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			input{
+				padding:0px;
+				margin:0px;
+				box-sizing: border-box;
+			}
+			form{
+				width:800px;
+				height:300px;
+				margin:0 auto;
+			}	
+			#top{
+				height:60px;
+			}
+			label,.span{
+				width:120px;
+				display:inline-block;
+				float:left;
+			}
+			input[type="radio"]{
+				float:left;
+			}
+			input[type="text"]{
+				width:200px;
+				height:30px;
+				border-radius:4px;
+				border:none;
+				border:1px solid #ccc;
+				display:inline-block;
+				float:left;
+			}
+			select{
+				width:120px;
+				height:30px;
+				border-radius:4px;
+				border:none;
+				border:1px solid #ccc;
+				display:inline-block;
+				float:left;
+			}
+			.clear{
+				clear:both;
+			}
+			#employer{
+				margin-top:15px;
+			}
+			#schoolSelect{
+				margin-left:30px;
+			}
+			.hidden{
+				display: none;
+			}
+			.display{
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<form method="post" action="" id="form">
+		    <div id="top">
+		        <input type="radio" name="student" checked="checked" id="inSchool"><label>在校生</label>
+		        <input type="radio" name="student" id="outSchool"><label>非在校生</label>
+		    </div>
+		    <div id="bottom">
+		        <div id="left">
+		            <label>学校</label>
+		            <select id="selection">
+		                <option>北京</option>
+		                <option>上海</option>
+		                <option>武汉</option>
+		                <option>南京</option>
+		            </select>
+		        </div>
+		        <div id="right">
+		            <select id="schoolSelect">
+		                <option>北京大学</option>
+		                <option>清华大学</option>
+		                <option>人民大学</option>
+		                <option>北京邮电大学</option>
+		            </select>
+		        </div>
+	        </div>
+	        <div class="clear"></div>
+	        <div id="employer" class="hidden">
+	            <span class="span">就业单位</span><input type="text">
+	        </div>
+	    </form> 
+	    <script>
+	    	function $(id){
+	    		return document.getElementById(id);
+	    	}
+	    	var inSchool=$("inSchool"),
+	    		outSchool=$("outSchool"),
+	    		employer=$("employer"),
+	    		bottom=$("bottom"),
+	    		citySelect=$("selection"),
+	    		schoolSelect=$("schoolSelect");
+	    	function addEvent(element,type,func){
+	    		if(element.addEventListener){
+	    			element.addEventListener(type,func,false);
+	    		}else{
+	    			element.attachEvent(type,func);
+	    		}
+	    	}
+	    	//给两个单选按钮和选择框添加时间监听
+	    	function radioEvent(){
+	    		addEvent(inSchool,'click',function(){
+	    			bottom.className='display';
+	    			employer.className='hidden';
+	    		});
+	    		addEvent(outSchool,'click',function(){
+	    			bottom.className='hidden';
+	    			employer.className='display';
+	    		});
+	    		addEvent(citySelect,'change',selectEvent);
+	    	}
+	    	//用data对象来存储学校数据
+	    	var data={
+	    		北京:["北京大学","清华大学","人民大学","北京外国语学院"],
+	    		上海:["复旦大学","交通大学","同济大学","上海财经大学"],
+	    		武汉:["武汉大学","华中科技大学","中南财经大学","武汉理工大学"],
+	    		南京:["南京大学","南京理工大学","南京航空航天大学","东南大学"]
+	    	};
+	    	//选择框改变事件
+	    	function selectEvent(){
+	    		var seletOption=citySelect.options[citySelect.selectedIndex];
+	    		value=seletOption.value;
+	    		schoolSelect.innerHTML="";
+	    		for(var i=0;i<data[value].length;i++){
+	    			var option=document.createElement("option");
+	    			option.innerHTML=data[value][i];
+	    			schoolSelect.appendChild(option);
+	    		}
+	    	}
+	    	function start(){
+	    		radioEvent();
+	    	}
+	    	start();
+	    </script>
+	</body>
+</html>
