@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+			  margin: 0;
+			  padding: 0;
+			}	
+			button{
+				margin:50px;
+				cursor:pointer;
+				width: 100px;
+			  	height: 30px;
+			}		
+			p{
+			  margin-top: 400px;
+			  height: 2000px;
+			  color: red;
+			}			
+			#box{
+			  width: 400px;
+			  height: 200px;
+			  min-height: 50px;
+			  min-width: 100px;
+			  border: 3px solid #ccc;
+			  position: fixed;
+			  top: 200px;
+			  left: 500px;
+			  z-index: 2;
+			  background-color:pink;
+			  display: none;
+			  text-align: center;
+			  font-weight: 600;
+			  font-family: "微软雅黑";
+			  color: #fff;
+			  cursor:move;
+			}
+			#layor{
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  z-index: 1;
+			  background-color: #ccc;
+			  opacity: 0.5;
+			  filter: bulr(5px);
+			  display: none;
+			}
+		</style>
+	</head>
+	<body id="body">
+		 <button type="button">我是按钮</button>
+		  <div id="box">
+		    <span>我的四个角可以缩放大小</span>
+		  </div>
+		  <div id="layor"></div>
+		  <p></p>
+		<script>
+			window.onload = function() {
+			  var method = {
+			    onmousedown: function() {
+			      var box = document.getElementById("box");
+			      box.onmousedown = function(event) {
+			        var e = event || window.event;
+			        var X = e.clientX - box.offsetLeft;
+			        var Y = e.clientY - box.offsetTop;
+			        console.log(X,Y,box.offsetLeft)
+			        document.onmousemove = function(event) {
+			          var e = event || window.event;
+			          var ox = e.clientX - X;
+			          var oy = e.clientY - Y;
+			          if(ox < 0){
+			            ox = 0;
+			          }else if(ox > window.innerWidth - box.offsetWidth) {
+			            ox = window.innerWidth - box.offsetWidth; 
+			          }
+			          if(oy < 0){
+			            oy = 0;
+			          }else if(oy > window.innerHeight - box.offsetHeight) {
+			            oy = window.innerHeight - box.offsetheight;
+			          }
+			          box.style.left = ox+"px";
+			          box.style.top = oy+"px";
+			        }
+			        document.onmouseup = function() {
+			          this.onmouseup = null;
+			          this.onmousemove = null;
+			        }
+			      }
+			
+			    },
+			    onmouse: function(event) {
+			      box.onmousemove = function() {
+			        var box = document.getElementById("box");
+			        var e = event || window.event;
+			        var X = e.clientX;
+			        var Y = e.clientY;
+			        var ox = box.offsetLeft + box.offsetWidth;
+			        var oy = box.offsetTop + box.offsetHeight;
+			        var str = '';
+			        if(Math.abs(X - ox)<=3 && Math.abs(Y - oy)<=3) {
+			          box.style.cursor = "nw-resize";
+			          str = "br";
+			        }else if(Math.abs(X - box.offsetLeft)<=3 && Math.abs(Y - box.offsetTop)<=3){
+			          box.style.cursor = "nw-resize";
+			          str = "tl";
+			        }else if(Math.abs(X - ox)<=3 && Math.abs(Y - box.offsetTop)<=3){
+			          box.style.cursor = "ne-resize";
+			          str = "tr";
+			        }else if(Math.abs(X - box.offsetLeft)<=3 && Math.abs(Y - oy)<=3){
+			          box.style.cursor = "ne-resize";
+			          str = "bl";
+			        }else{
+			          box.style.cursor = "";
+			          str = '';
+			        }
+			        method.fn(str);
+			      }
+			    },
+			    fn: function(dir) {
+			      var box = document.getElementById("box");
+			      var t = box.offsetTop;
+			      var l = box.offsetLeft;
+			      var w = box.offsetWidth;
+			      var h = box.offsetHeight;
+			      document.onmousedown = function(event) {
+			        if(dir == '') return;
+			        var e = event || window.event;
+			        var x = e.clientX;
+			        var y = e.clientY;
+			        document.onmousemove = function(event) {
+			          var e = event || window.event;
+			          var ox = e.clientX;
+			          var oy = e.clientY;
+			          switch(dir){
+			            case "tl": (function(){
+			              if(oy >= t+h-5) {
+			                if(ox >= l+w-10){
+			                  box.style.top = t+h-5+"px";
+			                  box.style.left = l+w-10+"px";
+			                }else{
+			                  box.style.top = t+h-5+"px";
+			                  box.style.left = l - (x-ox)+"px";
+			                  box.style.width = w + (x-ox)+"px";
+			                }
+			              }else if(ox >= l+w-10){
+			                if(oy >= t+h-5){
+			                  box.style.top = t+h-5+"px";
+			                  box.style.left = l+w-10+"px";
+			                }else{
+			                  box.style.left = l+w-10+"px";
+			                  box.style.top = t - (y-oy)+"px";
+			                  box.style.height = h + (y-oy)+"px";
+			                }
+			              }else{
+			                box.style.left = l - (x-ox)+"px";
+			                box.style.top = t - (y-oy)+"px";
+			                box.style.width = w + (x-ox)+"px";
+			                box.style.height = h + (y-oy)+"px";
+			              }
+			            })();break;
+			            case "br": (function(){
+			                box.style.width = w + (ox-x)+"px";
+			                box.style.height = h + (oy-y)+"px";
+			            })();break;
+			            case "tr":(function(){
+			              if(oy >= t+h-5) {
+			                  box.style.top = t+h-5+"px";
+			                  box.style.width = w + (ox-x)+"px";
+			              }else{
+			                box.style.top = t - (y-oy)+"px";
+			                box.style.width = w + (ox-x)+"px";
+			                box.style.height = h + (y-oy)+"px";
+			              }
+			            })();break;
+			            case "bl":(function(){
+			              if(ox >= l+w-10) {
+			                  box.style.left = l+w-10+"px";
+			                  box.style.height = h + (oy-y)+"px";
+			              }else{
+			                box.style.left = l - (x-ox)+"px";
+			                box.style.width = w + (x-ox)+"px";
+			                box.style.height = h + (oy-y)+"px";
+			              }
+			            })();break;
+			          }
+			        }
+			        document.onmouseup = function() {
+			          this.onmouseup = null;
+			          this.onmousemove = null;
+			        }
+			      }
+			    }
+			  }
+			  // method.onmousedown();
+			  // method.onmouse();
+			  var btn = document.querySelector("button");
+			  var box = document.querySelector("#box");
+			  var layor = document.querySelector("#layor");
+			  btn.onclick = function(){
+			    box.style.display = "block";
+			    layor.style.display = "block";
+			    method.onmousedown();
+			    method.onmouse();
+			    layor.onclick = function(){
+			      box.style.display = "none";
+			      layor.style.display = "none";
+			    }
+			  }			
+			}
+		</script>
+	</body>
+</html>
