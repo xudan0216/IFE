@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/echarts.js"></script>
+	</head>
+	<body>
+		 <div id="main" style="width: 600px;height:400px;"></div>
+		 <script>
+		  	// 基于准备好的dom，初始化echarts实例
+		 	var myChart=echarts.init(document.getElementById('main'));
+			option = {
+			    backgroundColor: '#f8f8f8',
+			    title:{
+			    	text:'图表示例'
+			    	},
+			    tooltip: {},
+			    xAxis: {
+			        data: ["欧莱雅","悦诗风吟","百雀羚","佰草集","玉兰油","skll"]
+			    },
+			    yAxis:[
+				    {
+				        name: '总数',
+				    },
+				    {
+				        name: '价钱',
+				    }
+			    ],
+			    series:[		   
+				    {
+				        type: 'line',
+				        data: [10, 25, 40, 15, 15, 26]
+				    },
+				    {
+				        type: 'bar',
+				        data: [5, 20, 36, 10, 10, 20]
+				    }
+			    ],
+	            roseType: 'angle',
+	            label: {
+	                normal: {
+	                    textStyle: {
+	                        color: 'pink'
+	                    }
+	                }
+	            },
+	            labelLine: {
+	                normal: {
+	                    lineStyle: {
+	                        color: 'pink'
+	                    }
+	                }
+	            },
+	            itemStyle: {
+	                normal: {
+	                    color: '#4CD142',			                  
+	                }
+	            },
+			};
+		    myChart.setOption(option);
+		 </script>
+	</body>
+</html>
